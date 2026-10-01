@@ -2441,6 +2441,71 @@ Details of a peer evaluation: The instructor may choose to see more details of o
 **Related Use Cases:**
 **Assumptions:**
 **Open Issues:**
+## **Notifications**
+
+### **UC-NOT-nudge-non-submitters: The instructor reminds students of outstanding submissions**
+
+**UC ID and Name:** UC-NOT-nudge-non-submitters: Remind students of outstanding submissions  
+**Created By:** Samuel Shema  
+**Date Created:** October 1, 2026  
+**Primary Actor:** instructor  
+**Secondary Actors:**  
+**Trigger:** The instructor indicates that they want to remind students with outstanding submissions in their course section.  
+**Description:** The instructor wants to identify students with actionable outstanding submissions in their course section and remind them of the specific artifacts they still need to submit.
+
+**Preconditions:**
+- PRE-1. The instructor is logged into the system.
+- PRE-2. The instructor has access to the course section (BR-section-scoped-access).
+
+**Postconditions:**
+- POST-1. Reminders have been successfully sent to the selected eligible students, except for any reminder attempts that failed.
+- POST-2. The instructor is informed of which reminders were successfully sent and which failed.
+
+**Main Success Scenario:**
+1. The instructor indicates that they want to remind students with outstanding submissions in their course section.
+2. The system determines which submission artifacts are due for the course section that day.
+3. The system identifies eligible students in the course section who currently have actionable outstanding submissions for those due artifacts.
+4. The system displays the identified students and the specific due artifact or artifacts each student has not submitted.
+5. The instructor selects one or more identified students, or selects all identified students, and confirms that the reminders should be sent.
+6. The system sends each selected student a reminder identifying the specific due artifact or artifacts they still need to submit.
+7. The system informs the instructor that the reminders were successfully sent.
+8. Use case ends.
+
+**Extensions:**
+- **3a. No students have actionable outstanding submissions for the artifacts due that day:**
+  - 3a1. The system informs the instructor that there are no outstanding submissions requiring reminders.
+  - 3a2. Use case ends.
+- **3b. A student is not assigned to a team:**
+  - 3b1. The system excludes the student from the actionable outstanding-submission list (BR-team-assignment-required).
+- **3c. A peer evaluation's submission window has closed:**
+  - 3c1. The system excludes the peer evaluation from the student's actionable outstanding submissions (BR-evaluation-submission-window).
+- **3d. The week associated with a peer evaluation is not an active week:**
+  - 3d1. The system excludes the peer evaluation from the student's actionable outstanding submissions (BR-active-weeks).
+- **3e. A student previously submitted an artifact but the submission was later deleted:**
+  - 3e1. If the artifact is currently due and the student remains eligible to submit it, the system treats the artifact as outstanding again.
+- **3f. A student has already received a successful manual reminder for the same outstanding artifact and the submission state has not changed:**
+  - 3f1. The system excludes that artifact from another manual reminder until its submission state changes (BR-reminder-repeat).
+- **6a. The mail server rejects a selected student's reminder email:**
+  - 6a1. The system records the reminder attempt as failed.
+  - 6a2. The system does not mark the student as successfully reminded for that outstanding artifact.
+  - 6a3. The system continues sending reminders to the remaining selected students.
+  - 6a4. The system informs the instructor which reminder failed.
+
+**Priority:** High
+
+**Frequency of Use:** Weekly during the course term, on configured WAR and peer-evaluation due days, as needed by instructors.
+
+**Business Rules:** BR-section-scoped-access, BR-team-assignment-required, BR-active-weeks, BR-evaluation-submission-window, BR-reminder-repeat
+
+**Associated Information:**
+- Reminder eligibility is evaluated separately for each artifact due that day.
+- A reminder identifies only the student's outstanding artifact or artifacts that are due that day and includes their configured due times.
+- If multiple artifacts are configured for the same due day, one reminder may identify all of that student's outstanding artifacts due that day.
+- Reminder emails use the existing Gmail SMTP integration.
+- The instructor may select individual eligible students or select all eligible students.
+
+**Assumptions:**
+**Open Issues:**
 
 ## **Templates and Provisioning**
 
